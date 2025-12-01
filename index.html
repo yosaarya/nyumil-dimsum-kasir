@@ -1,39 +1,180 @@
-<!-- GANTI INI: -->
-<script src="js/utils.js"></script>
-<script src="js/database.js"></script>
-<script src="js/kasir.js"></script>
-<script src="js/statistik.js"></script>
-<script src="js/chart.js"></script>
-<script src="js/app.js"></script>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Nyumil Dimsum Kasir</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#e63946">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <!-- Icons -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="assets/icons/icon-192.png">
+    <link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+    
+    <!-- Fonts & Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/print.css" media="print">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-utensils"></i>
+                <h1>Nyumil Dimsum Kasir</h1>
+            </div>
+            <p class="subtitle">Aplikasi kasir dengan statistik penjualan lengkap</p>
+        </header>
 
-<!-- MENJADI INI: -->
-<script>
-    // Load semua script secara berurutan
-    const scripts = [
-        'js/utils.js',
-        'js/database.js', 
-        'js/kasir.js',
-        'js/statistik.js',
-        'js/chart.js',
-        'js/app.js'
-    ];
+        <!-- Dashboard Stats -->
+        <section class="stats-summary" id="statsSummary">
+            <!-- Stats akan diisi oleh JavaScript -->
+        </section>
+
+        <!-- Main Navigation -->
+        <nav class="tabs" id="mainTabs">
+            <button class="tab active" data-tab="pos">
+                <i class="fas fa-cash-register"></i>
+                <span>Kasir POS</span>
+            </button>
+            <button class="tab" data-tab="stats">
+                <i class="fas fa-chart-bar"></i>
+                <span>Statistik</span>
+            </button>
+            <button class="tab" data-tab="history">
+                <i class="fas fa-history"></i>
+                <span>Riwayat</span>
+            </button>
+            <button class="tab" data-tab="products">
+                <i class="fas fa-box"></i>
+                <span>Produk</span>
+            </button>
+        </nav>
+
+        <!-- Tab Contents -->
+        <main id="tabContents">
+            <!-- POS Tab -->
+            <div class="tab-content active" id="pos-tab">
+                <div class="pos-container">
+                    <!-- Product Categories -->
+                    <div class="categories" id="productCategories">
+                        <!-- Categories akan diisi -->
+                    </div>
+
+                    <!-- Product Grid -->
+                    <div class="menu-grid" id="menuGrid">
+                        <!-- Products akan diisi -->
+                    </div>
+
+                    <!-- Order Panel -->
+                    <div class="order-panel">
+                        <div class="order-header">
+                            <h3><i class="fas fa-shopping-cart"></i> Pesanan Aktif</h3>
+                            <span class="badge" id="orderCount">0</span>
+                        </div>
+                        
+                        <div class="order-list" id="orderList">
+                            <div class="empty-order" id="emptyOrder">
+                                <i class="fas fa-shopping-cart"></i>
+                                <p>Belum ada pesanan</p>
+                            </div>
+                        </div>
+
+                        <div class="order-summary">
+                            <div class="summary-row">
+                                <span>Subtotal:</span>
+                                <span id="subtotalAmount">Rp 0</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Total:</span>
+                                <span class="total-amount" id="totalAmount">Rp 0</span>
+                            </div>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button class="btn btn-secondary" id="clearBtn">
+                                <i class="fas fa-trash"></i> Hapus
+                            </button>
+                            <button class="btn btn-primary" id="checkoutBtn">
+                                <i class="fas fa-check"></i> Bayar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistics Tab -->
+            <div class="tab-content" id="stats-tab">
+                <div class="stats-container">
+                    <!-- Statistics content akan diisi oleh JavaScript -->
+                </div>
+            </div>
+
+            <!-- History Tab -->
+            <div class="tab-content" id="history-tab">
+                <div class="history-container">
+                    <!-- History content akan diisi oleh JavaScript -->
+                </div>
+            </div>
+
+            <!-- Products Tab -->
+            <div class="tab-content" id="products-tab">
+                <div class="products-container">
+                    <!-- Products management akan diisi oleh JavaScript -->
+                </div>
+            </div>
+        </main>
+
+        <!-- Notification -->
+        <div class="notification" id="notification"></div>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal" id="paymentModal">
+        <div class="modal-content">
+            <!-- Payment modal content -->
+        </div>
+    </div>
+
+    <div class="modal" id="receiptModal">
+        <div class="modal-content">
+            <!-- Receipt modal content -->
+        </div>
+    </div>
+
+    <!-- JavaScript Files -->
+    <script src="js/utils.js"></script>
+    <script src="js/database.js"></script>
+    <script src="js/kasir.js"></script>
+    <script src="js/statistik.js"></script>
+    <script src="js/chart.js"></script>
+    <script src="js/app.js"></script>
     
-    function loadScripts(index = 0) {
-        if (index >= scripts.length) {
-            // Semua script loaded, init app
-            if (typeof initApp === 'function') initApp();
-            return;
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('SW registered:', registration);
+                    })
+                    .catch(error => {
+                        console.log('SW registration failed:', error);
+                    });
+            });
         }
-        
-        const script = document.createElement('script');
-        script.src = scripts[index];
-        script.onload = () => loadScripts(index + 1);
-        script.onerror = () => {
-            console.error('Failed to load:', scripts[index]);
-            loadScripts(index + 1);
-        };
-        document.head.appendChild(script);
-    }
-    
-    loadScripts();
-</script>
+    </script>
+</body>
+</html>
