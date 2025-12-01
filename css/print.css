@@ -1,0 +1,299 @@
+/* print.css - Styles untuk mode cetak */
+
+@media print {
+    /* Hide unnecessary elements */
+    .tabs,
+    .action-buttons,
+    .modal,
+    .notification,
+    .category-btn,
+    .menu-item,
+    .menu-grid,
+    .order-panel .btn,
+    .stats-summary,
+    .date-filter,
+    .export-btn,
+    .tab:not(.active),
+    .tab-content:not(.active) {
+        display: none !important;
+    }
+    
+    /* Reset body styling */
+    body {
+        background: white !important;
+        color: black !important;
+        font-size: 12px !important;
+        line-height: 1.2 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    /* Container styling */
+    .container {
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+    }
+    
+    /* Header for print */
+    .header {
+        background: white !important;
+        color: black !important;
+        border-bottom: 2px solid #000 !important;
+        margin-bottom: 10px !important;
+        padding: 10px !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        text-align: center !important;
+    }
+    
+    .logo h1 {
+        color: black !important;
+        font-size: 16px !important;
+        margin-bottom: 5px !important;
+    }
+    
+    .subtitle {
+        color: #666 !important;
+        font-size: 10px !important;
+    }
+    
+    /* Receipt specific styling */
+    .receipt {
+        font-family: 'Courier New', monospace !important;
+        font-size: 11px !important;
+        line-height: 1.2 !important;
+        white-space: pre-wrap !important;
+        background: white !important;
+        padding: 10px !important;
+        border: none !important;
+        border-radius: 0 !important;
+        width: 80mm !important;
+        margin: 0 auto !important;
+    }
+    
+    .receipt-modal .modal-content {
+        width: 80mm !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+        border: none !important;
+    }
+    
+    /* Tables for print */
+    .stats-table,
+    .history-table,
+    .products-table {
+        width: 100% !important;
+        border-collapse: collapse !important;
+        font-size: 10px !important;
+    }
+    
+    .stats-table th,
+    .history-table th,
+    .products-table th {
+        background: #f0f0f0 !important;
+        color: black !important;
+        padding: 5px !important;
+        border: 1px solid #000 !important;
+    }
+    
+    .stats-table td,
+    .history-table td,
+    .products-table td {
+        padding: 4px !important;
+        border: 1px solid #ccc !important;
+    }
+    
+    /* Order receipt styling */
+    .order-summary {
+        border-top: 2px dashed #000 !important;
+        margin-top: 15px !important;
+        padding-top: 10px !important;
+    }
+    
+    .summary-row {
+        display: flex !important;
+        justify-content: space-between !important;
+        margin-bottom: 5px !important;
+    }
+    
+    .total-amount {
+        font-weight: bold !important;
+        font-size: 14px !important;
+    }
+    
+    /* Hide modal controls */
+    .modal-header,
+    .modal-footer,
+    .modal-close,
+    .btn {
+        display: none !important;
+    }
+    
+    /* Show only active content */
+    .tab-content.active {
+        display: block !important;
+    }
+    
+    /* Charts - convert to simple tables if possible */
+    canvas {
+        display: none !important;
+    }
+    
+    .chart-data {
+        display: table !important;
+        width: 100% !important;
+        margin-bottom: 20px !important;
+    }
+    
+    /* Page breaks */
+    .page-break {
+        page-break-before: always;
+    }
+    
+    /* Avoid breaking inside important elements */
+    .order-item,
+    .stats-table tr,
+    .history-table tr {
+        page-break-inside: avoid;
+    }
+    
+    /* Header on each page */
+    @page {
+        margin: 0.5cm;
+        
+        @top-center {
+            content: "Nyumil Dimsum Kasir";
+            font-size: 10px;
+            color: #666;
+        }
+        
+        @bottom-center {
+            content: "Halaman " counter(page);
+            font-size: 9px;
+            color: #666;
+        }
+    }
+    
+    /* First page header */
+    @page :first {
+        @top-center {
+            content: normal;
+        }
+    }
+    
+    /* Thermal printer specific */
+    @media print and (width: 80mm) {
+        body {
+            width: 80mm !important;
+            font-size: 9px !important;
+        }
+        
+        .receipt {
+            width: 100% !important;
+            padding: 5px !important;
+        }
+        
+        .order-item {
+            padding: 2px 0 !important;
+        }
+        
+        .summary-row {
+            font-size: 10px !important;
+        }
+        
+        .total-amount {
+            font-size: 12px !important;
+        }
+    }
+    
+    /* A4 paper specific */
+    @media print and (width: 210mm) {
+        body {
+            width: 210mm !important;
+            font-size: 11px !important;
+        }
+        
+        .container {
+            padding: 20px !important;
+        }
+        
+        .header {
+            margin-bottom: 20px !important;
+        }
+    }
+    
+    /* Landscape mode */
+    @media print and (orientation: landscape) {
+        body {
+            width: 297mm !important;
+        }
+        
+        .menu-grid {
+            grid-template-columns: repeat(4, 1fr) !important;
+        }
+    }
+    
+    /* Color printing */
+    @media print and (color) {
+        .header {
+            color: var(--primary) !important;
+        }
+        
+        .total-amount {
+            color: var(--primary) !important;
+        }
+    }
+    
+    /* Black and white printing */
+    @media print and (monochrome) {
+        * {
+            color: black !important;
+            background: white !important;
+        }
+        
+        .header {
+            border-color: black !important;
+        }
+        
+        .receipt {
+            border: 1px solid black !important;
+        }
+    }
+    
+    /* Hide URLs in links */
+    a[href]:after {
+        content: " (" attr(href) ")";
+        font-size: 8px;
+        color: #666;
+    }
+    
+    /* Hide empty elements */
+    .empty-state,
+    .loading {
+        display: none !important;
+    }
+    
+    /* Force visibility for print */
+    .print-only {
+        display: block !important;
+    }
+    
+    .no-print {
+        display: none !important;
+    }
+    
+    /* Adjust margins for thermal paper */
+    @media print and (max-width: 100mm) {
+        @page {
+            margin: 0;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+        }
+    }
+}
