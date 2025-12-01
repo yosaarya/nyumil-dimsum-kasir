@@ -1,0 +1,164 @@
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Tablet Devices (768px - 992px) */
+@media (max-width: 992px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .logo h1 {
+        font-size: 1.5rem;
+    }
+    
+    .pos-container {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .order-panel {
+        height: auto;
+        max-height: 500px;
+    }
+    
+    .menu-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        height: 400px;
+    }
+    
+    .stats-summary {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Mobile Devices (480px - 768px) */
+@media (max-width: 768px) {
+    .tabs {
+        flex-wrap: wrap;
+    }
+    
+    .tab {
+        flex: 1 0 calc(50% - 10px);
+        margin-bottom: 10px;
+    }
+    
+    .menu-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    
+    .menu-item {
+        padding: 15px;
+    }
+    
+    .menu-icon {
+        font-size: 2rem;
+    }
+    
+    .stats-summary {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .action-buttons {
+        grid-template-columns: 1fr;
+    }
+    
+    .modal-content {
+        margin: 10px;
+        width: calc(100% - 20px);
+    }
+}
+
+/* Small Mobile Devices (< 480px) */
+@media (max-width: 480px) {
+    .header {
+        padding: 15px;
+    }
+    
+    .logo {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .logo h1 {
+        font-size: 1.3rem;
+        text-align: center;
+    }
+    
+    .subtitle {
+        font-size: 0.8rem;
+    }
+    
+    .tab {
+        padding: 12px 8px;
+        font-size: 0.8rem;
+    }
+    
+    .tab i {
+        font-size: 1rem;
+    }
+    
+    .menu-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .order-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .item-controls {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .btn {
+        padding: 12px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Landscape Mode */
+@media (max-height: 600px) and (orientation: landscape) {
+    .menu-grid {
+        height: 300px;
+    }
+    
+    .order-panel {
+        height: 400px;
+    }
+}
+
+/* Safe Area for Notch Devices */
+@supports (padding: max(0px)) {
+    .container {
+        padding-left: max(15px, env(safe-area-inset-left));
+        padding-right: max(15px, env(safe-area-inset-right));
+        padding-top: max(15px, env(safe-area-inset-top));
+    }
+    
+    .tabs {
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+    }
+}
+
+/* Print Styles */
+@media print {
+    .tabs,
+    .action-buttons,
+    .modal,
+    .notification {
+        display: none !important;
+    }
+    
+    .pos-container {
+        display: block !important;
+    }
+    
+    .order-panel {
+        box-shadow: none;
+        border: 1px solid #000;
+    }
+}
