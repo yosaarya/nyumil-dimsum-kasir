@@ -176,5 +176,14 @@
             });
         }
     </script>
+    <!-- ERUDA CONSOLE FOR MOBILE -->
+<script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+<script>
+    // Only show Eruda on your specific testing
+    if (window.location.href.includes('vercel.app') || 
+        localStorage.getItem('showDebug') === 'true') {
+        eruda.init();
+    }
+</script>
 </body>
 </html>
