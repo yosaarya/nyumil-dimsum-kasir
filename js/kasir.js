@@ -201,3 +201,7 @@ class Kasir {
         // Update summary
         orderCount.textContent = totalItems.toString();
         subtotalAmount.textContent = formatR
+
+        // ===== Tambahkan baris ini di bagian PALING AKHIR file kasir.js =====
+export default new Kasir();
+
