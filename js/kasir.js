@@ -358,6 +358,331 @@ Cetak struk sekarang?
         }
     }
 }
+        // ===== PRINT THERMAL RECEIPT =====
+function printReceipt(transaction) {
+    console.log('🖨️ Printing receipt for transaction:', transaction.id);
+    
+    // Buat jendela baru untuk print
+    const printWindow = window.open('', '_blank', 'width=400,height=600');
+    if (!printWindow) {
+        alert('Popup diblokir! Izinkan popup untuk mencetak struk.');
+        return;
+    }
+    
+    // Format waktu
+    const formatTime = (timeString) => {
+        if (!timeString) return '';
+        return timeString.split(':').slice(0, 2).join(':');
+    };
+    
+    // Hitung total item
+    const totalItems = transaction.items.reduce((sum, item) => sum + item.quantity, 0);
+    
+    // Buat konten HTML untuk struk
+    const receiptHTML = `
+        <!DOCTYPE html>
+        <html lang="id">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Struk Transaksi #${transaction.id}</title>
+            
+            <!-- Load your existing print.css -->
+            <link rel="stylesheet" href="css/print.css">
+            <link rel="stylesheet" href="css/style.css">
+            
+            <!-- Thermal printer specific styles -->
+            <style>
+                /* Thermal printer optimization */
+                body {
+                    font-family: 'Courier New', monospace !important;
+                    font-size: 11px !important;
+                    line-height: 1.2 !important;
+                    width: 80mm !important;
+                    margin: 0 auto !important;
+                    padding: 5mm !important;
+                    background: white !important;
+                    color: black !important;
+                }
+                
+                .receipt-container {
+                    width: 100% !important;
+                    max-width: 80mm !important;
+                    margin: 0 auto !important;
+                }
+                
+                .receipt-header {
+                    text-align: center;
+                    margin-bottom: 10px;
+                    padding-bottom: 5px;
+                    border-bottom: 1px dashed #000;
+                }
+                
+                .business-name {
+                    font-weight: bold;
+                    font-size: 14px;
+                    margin-bottom: 2px;
+                    text-transform: uppercase;
+                }
+                
+                .business-info {
+                    font-size: 10px;
+                    margin-bottom: 5px;
+                }
+                
+                .transaction-info {
+                    margin: 8px 0;
+                    display: flex;
+                    justify-content: space-between;
+                }
+                
+                .items-table {
+                    width: 100%;
+                    margin: 10px 0;
+                    border-collapse: collapse;
+                }
+                
+                .items-table td {
+                    padding: 3px 0;
+                    border-bottom: 1px dashed #ccc;
+                    vertical-align: top;
+                }
+                
+                .item-name {
+                    width: 55%;
+                }
+                
+                .item-qty {
+                    width: 15%;
+                    text-align: center;
+                }
+                
+                .item-price {
+                    width: 30%;
+                    text-align: right;
+                }
+                
+                .summary {
+                    margin: 10px 0;
+                    padding-top: 10px;
+                    border-top: 2px solid #000;
+                }
+                
+                .summary-row {
+                    display: flex;
+                    justify-content: space-between;
+                    margin: 4px 0;
+                }
+                
+                .total-row {
+                    font-weight: bold;
+                    font-size: 12px;
+                }
+                
+                .footer {
+                    text-align: center;
+                    margin-top: 15px;
+                    padding-top: 10px;
+                    border-top: 1px dashed #000;
+                    font-size: 10px;
+                }
+                
+                .thank-you {
+                    margin: 10px 0;
+                    text-align: center;
+                    font-weight: bold;
+                }
+                
+                .barcode {
+                    text-align: center;
+                    margin: 10px 0;
+                    font-family: 'Courier New', monospace;
+                }
+                
+                .divider {
+                    border-top: 1px dashed #000;
+                    margin: 8px 0;
+                }
+                
+                /* Print specific styles */
+                @media print {
+                    @page {
+                        margin: 0;
+                        padding: 0;
+                        size: 80mm auto;
+                    }
+                    
+                    body {
+                        margin: 0 !important;
+                        padding: 5mm !important;
+                        width: 80mm !important;
+                        font-size: 10px !important;
+                    }
+                    
+                    .no-print {
+                        display: none !important;
+                    }
+                    
+                    .print-btn {
+                        display: none !important;
+                    }
+                }
+                
+                /* Preview mode styles */
+                .print-btn {
+                    display: block;
+                    margin: 20px auto;
+                    padding: 10px 20px;
+                    background: #e63946;
+                    color: white;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    font-size: 14px;
+                }
+                
+                .print-btn:hover {
+                    background: #c1121f;
+                }
+                
+                .receipt-preview {
+                    background: white;
+                    padding: 15px;
+                    border-radius: 5px;
+                    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+                    margin-bottom: 20px;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="receipt-container">
+                <div class="receipt-preview">
+                    <!-- Header -->
+                    <div class="receipt-header">
+                        <div class="business-name">NYUMIL DIMSUM</div>
+                        <div class="business-info">
+                            Jl. Dimsum Lezat No. 123<br>
+                            Telp: (021) 555-7890
+                        </div>
+                    </div>
+                    
+                    <div class="divider"></div>
+                    
+                    <!-- Transaction Info -->
+                    <div class="transaction-info">
+                        <div>
+                            <div><strong>TRANSAKSI #${transaction.id}</strong></div>
+                            <div>${transaction.date} ${formatTime(transaction.time)}</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div>Kasir: Admin</div>
+                            <div>Total Item: ${totalItems}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="divider"></div>
+                    
+                    <!-- Items List -->
+                    <table class="items-table">
+                        <thead>
+                            <tr>
+                                <td class="item-name"><strong>ITEM</strong></td>
+                                <td class="item-qty"><strong>QTY</strong></td>
+                                <td class="item-price"><strong>HARGA</strong></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${transaction.items.map(item => `
+                                <tr>
+                                    <td class="item-name">${item.name}</td>
+                                    <td class="item-qty">${item.quantity}</td>
+                                    <td class="item-price">${formatRupiah(item.total)}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                    
+                    <div class="divider"></div>
+                    
+                    <!-- Summary -->
+                    <div class="summary">
+                        <div class="summary-row">
+                            <span>Subtotal:</span>
+                            <span>${formatRupiah(transaction.subtotal)}</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Total Item:</span>
+                            <span>${totalItems} item</span>
+                        </div>
+                        <div class="summary-row total-row">
+                            <span>TOTAL:</span>
+                            <span>${formatRupiah(transaction.total)}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="divider"></div>
+                    
+                    <!-- Barcode -->
+                    <div class="barcode">
+                        <div style="font-family: monospace; font-size: 16px; letter-spacing: 2px;">
+                            * ${transaction.id} *
+                        </div>
+                        <div style="font-size: 9px; margin-top: 2px;">
+                            ID: ${transaction.id}
+                        </div>
+                    </div>
+                    
+                    <!-- Footer -->
+                    <div class="footer">
+                        <div class="thank-you">TERIMA KASIH</div>
+                        <div>Struk ini sebagai bukti pembayaran</div>
+                        <div>Barang yang sudah dibeli tidak dapat dikembalikan</div>
+                    </div>
+                </div>
+                
+                <!-- Print Button -->
+                <button class="print-btn" onclick="window.print();">
+                    <i class="fas fa-print"></i> CETAK STRUK
+                </button>
+                
+                <button class="print-btn" onclick="window.close();" style="background: #666;">
+                    <i class="fas fa-times"></i> TUTUP
+                </button>
+            </div>
+            
+            <script>
+                // Auto-print after 500ms if user doesn't cancel
+                setTimeout(() => {
+                    if (!window.printTriggered) {
+                        window.print();
+                        window.printTriggered = true;
+                        
+                        // Close window after printing (with delay for print dialog)
+                        setTimeout(() => {
+                            if (!window.closed) {
+                                window.close();
+                            }
+                        }, 1000);
+                    }
+                }, 500);
+                
+                // Mark as printed when print dialog is opened
+                window.onbeforeprint = function() {
+                    window.printTriggered = true;
+                };
+            </script>
+        </body>
+        </html>
+    `;
+    
+    // Write HTML to the new window
+    printWindow.document.open();
+    printWindow.document.write(receiptHTML);
+    printWindow.document.close();
+    
+    // Focus on the print window
+    printWindow.focus();
+}
 
         // ===== Tambahkan baris ini di bagian PALING AKHIR file kasir.js =====
 export default new Kasir();
