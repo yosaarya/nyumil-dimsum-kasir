@@ -925,5 +925,46 @@ document.addEventListener('DOMContentLoaded', () => {
     window.app.init();
 });
 
+function debugLog(...args) {
+    console.log(...args);
+    
+    // Also show in mobile (optional)
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        // Uncomment untuk show alert (tapi ganggu UX)
+        // alert(args.map(arg => JSON.stringify(arg)).join(', '));
+        
+        // Atau simpan ke element di page
+        const debugDiv = document.getElementById('mobile-debug') || 
+                         document.createElement('div');
+        debugDiv.id = 'mobile-debug';
+        debugDiv.style.cssText = `
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            max-width: 200px;
+            z-index: 9999;
+            display: none;
+        `;
+        document.body.appendChild(debugDiv);
+        
+        debugDiv.textContent = args.map(a => 
+            typeof a === 'object' ? JSON.stringify(a).substring(0,50) : String(a)
+        ).join(', ');
+        
+        debugDiv.style.display = 'block';
+        setTimeout(() => {
+            debugDiv.style.display = 'none';
+        }, 3000);
+    }
+}
+
+// Use instead of console.log
+debugLog('App loaded', { time: new Date() });
+
 // Export app instance
 export default window.app;
